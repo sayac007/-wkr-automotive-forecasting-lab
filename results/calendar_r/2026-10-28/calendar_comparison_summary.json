@@ -1,0 +1,42 @@
+{
+  "generated_rows": 21234,
+  "legacy_rows": 21199,
+  "common_rows": 21181,
+  "legacy_only_rows": 18,
+  "generated_only_rows": 53,
+  "Ferien": {
+    "matches": 20946,
+    "mismatches": 235,
+    "match_rate": 0.988905150842736
+  },
+  "Karfreitag": {
+    "matches": 21181,
+    "mismatches": 0,
+    "match_rate": 1
+  },
+  "Weihnachten": {
+    "matches": 21139,
+    "mismatches": 42,
+    "match_rate": 0.998017090788915
+  },
+  "Silvester": {
+    "matches": 21181,
+    "mismatches": 0,
+    "match_rate": 1
+  },
+  "ErsterMai": {
+    "matches": 21181,
+    "mismatches": 0,
+    "match_rate": 1
+  },
+  "Pfingsten": {
+    "matches": 21181,
+    "mismatches": 0,
+    "match_rate": 1
+  },
+  "Himmelfahrt": {
+    "matches": 21181,
+    "mismatches": 0,
+    "match_rate": 1
+  }
+}

@@ -98,6 +98,14 @@ pyproject.toml        Python package, dependencies and development-tool configur
 
 ## Reproducibility
 
+### German shopping and school-holiday calendar in R
+
+[`R/generate_calendar_de.R`](R/generate_calendar_de.R) generates daily and ISO-week
+features using the last possible shopping day before a holiday and explicit
+Saturday extensions around school holidays. It preserves the manual reference
+and can compare against it. [German rules, source capture and run instructions](docs/calendar_generator_r.md).
+Offline checks: `Rscript tests/test_calendar_de.R`.
+
 R scripts use relative project paths and fixed seeds where synthetic data are generated. Azure ML jobs declare their code, inputs, outputs, environment and compute in version-controlled YAML.
 
 For Python development, dependencies and development tools are declared in `pyproject.toml`. CI installs the project into a clean environment before running Ruff and pytest, so automated tests do not depend on a developer's local repository layout or Python path.
