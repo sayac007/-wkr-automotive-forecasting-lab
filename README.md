@@ -107,6 +107,9 @@ and can compare against it. Halloween and Valentine's Day use the same shopping-
 rule and appear in daily and weekly outputs. [German rules, source capture and run instructions](docs/calendar_generator_r.md).
 Offline checks: `Rscript tests/test_calendar_de.R`.
 
+Ready-to-use [ZIP with the R script and all three generated CSV files](downloads/WKR_Kalender_2017-2026_R_und_CSV.zip)
+for 2017–2026: [contents, download instructions and checksum](downloads/README.md).
+
 R scripts use relative project paths and fixed seeds where synthetic data are generated. Azure ML jobs declare their code, inputs, outputs, environment and compute in version-controlled YAML.
 
 For Python development, dependencies and development tools are declared in `pyproject.toml`. CI installs the project into a clean environment before running Ruff and pytest, so automated tests do not depend on a developer's local repository layout or Python path.
