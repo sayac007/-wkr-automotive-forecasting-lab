@@ -7,10 +7,12 @@ WKR_STATES <- c(
   "DE-NI" = "Niedersachsen", "DE-NW" = "Nordrhein-Westfalen",
   "DE-ST" = "Sachsen-Anhalt", "DE-TH" = "Thüringen"
 )
-CALENDAR_COLUMNS <- c(
+LEGACY_CALENDAR_COLUMNS <- c(
   "Datum", "Bundesland", "Ferien", "Karfreitag", "Weihnachten",
   "Silvester", "ErsterMai", "Pfingsten", "Himmelfahrt"
 )
+CALENDAR_COLUMNS <- c(LEGACY_CALENDAR_COLUMNS, "Halloween", "Valentinstag")
+EVENT_COLUMNS <- setdiff(CALENDAR_COLUMNS, c("Datum", "Bundesland", "Ferien"))
 
 iso_date <- function(x) {
   x <- as.character(x)
@@ -114,7 +116,7 @@ build_calendar_de <- function(start, end, states, public, school,
       Verkaufstag = as.integer(weekday_monday(grid) != 6L & !grid %in% pub),
       stringsAsFactors = FALSE
     )
-    for (name in CALENDAR_COLUMNS[4:9]) out[[name]] <- 0L
+    for (name in EVENT_COLUMNS) out[[name]] <- 0L
     for (year in years) {
       e <- calendar_easter(year)
       anchors <- list(
@@ -122,7 +124,9 @@ build_calendar_de <- function(start, end, states, public, school,
         Weihnachten = iso_date(sprintf("%04d-12-%02d", year, c(25L, 26L))),
         Silvester = iso_date(sprintf("%04d-01-01", year)),
         ErsterMai = iso_date(sprintf("%04d-05-01", year)),
-        Pfingsten = e + 50L, Himmelfahrt = e + 39L
+        Pfingsten = e + 50L, Himmelfahrt = e + 39L,
+        Halloween = iso_date(sprintf("%04d-10-31", year)),
+        Valentinstag = iso_date(sprintf("%04d-02-14", year))
       )
       for (name in names(anchors)) {
         for (i in seq_along(anchors[[name]])) {
@@ -185,7 +189,7 @@ weekly_calendar_de <- function(daily) {
       Feiertage = sum(daily$Feiertag[ii]), Verkaufstage = sum(daily$Verkaufstag[ii]),
       stringsAsFactors = FALSE
     )
-    for (name in c(CALENDAR_COLUMNS[4:9], "Einkauf_vor_Feiertag")) {
+    for (name in c(EVENT_COLUMNS, "Einkauf_vor_Feiertag")) {
       out[[name]] <- max(daily[[name]][ii])
     }
     out
@@ -196,7 +200,8 @@ weekly_calendar_de <- function(daily) {
 }
 
 compare_calendar_de <- function(generated, legacy, start, end, states) {
-  if (!all(CALENDAR_COLUMNS %in% names(legacy))) stop("Legacy columns missing")
+  if (!all(LEGACY_CALENDAR_COLUMNS %in% names(legacy))) stop("Legacy columns missing")
+  comparison_columns <- intersect(CALENDAR_COLUMNS, names(legacy))
   dates <- suppressWarnings(as.Date(legacy$Datum, "%d.%m.%Y"))
   if (anyNA(dates) || any(format(dates, "%d.%m.%Y") != legacy$Datum) ||
       anyNA(legacy$Bundesland) || any(!nzchar(legacy$Bundesland)) ||
@@ -204,8 +209,8 @@ compare_calendar_de <- function(generated, legacy, start, end, states) {
     stop("Invalid/duplicate legacy calendar keys")
   }
   legacy <- legacy[dates >= start & dates <= end & legacy$Bundesland %in% states,
-                   CALENDAR_COLUMNS, drop = FALSE]
-  for (name in CALENDAR_COLUMNS[3:9]) {
+                   comparison_columns, drop = FALSE]
+  for (name in setdiff(comparison_columns, c("Datum", "Bundesland"))) {
     if (anyNA(legacy[[name]]) || any(!legacy[[name]] %in% c(0, 1))) {
       stop("Invalid legacy indicator")
     }
@@ -214,11 +219,12 @@ compare_calendar_de <- function(generated, legacy, start, end, states) {
   joined <- merge(legacy, generated, by = keys, suffixes = c("_legacy", "_generated"))
   summary <- list(generated_rows = nrow(generated), legacy_rows = nrow(legacy),
                   common_rows = nrow(joined))
+  summary$not_in_reference <- setdiff(CALENDAR_COLUMNS, comparison_columns)
   summary$legacy_only_rows <- nrow(legacy) - nrow(joined)
   summary$generated_only_rows <- nrow(generated) - nrow(joined)
   details <- data.frame(Datum = character(), Bundesland = character(),
                         Variable = character(), Legacy = integer(), Generated = integer())
-  for (name in CALENDAR_COLUMNS[3:9]) {
+  for (name in setdiff(comparison_columns, keys)) {
     old <- as.integer(joined[[paste0(name, "_legacy")]])
     new <- as.integer(joined[[paste0(name, "_generated")]])
     different <- old != new
@@ -412,7 +418,7 @@ calendar_main <- function(args = commandArgs(trailingOnly = TRUE)) {
     unname(tools::md5sum(sub("^--file=", "", script)))
   } else NULL
   manifest <- list(
-    rules_version = "1.0.0", start = as.character(start), end = as.character(end),
+    rules_version = "1.1.0", start = as.character(start), end = as.character(end),
     generator_md5 = generator_md5,
     created_at_utc = format(Sys.time(), "%Y-%m-%dT%H:%M:%SZ", tz = "UTC"),
     states = as.list(WKR_STATES[codes]), R_version = R.version.string,

@@ -6,6 +6,11 @@ Regelversion 1.0.0 entspricht den im Gespräch präzisierten Einkaufs- und
 Ferienregeln; siehe [Anleitung](../../../docs/calendar_generator_r.md).
 Keine Umsätze erzeugt und keine Modelle geschätzt.
 
+Dieser Nachweis bleibt als Ausführung der Regelversion **1.0.0** unverändert
+erhalten. Das [damals ausgeführte Skript](https://github.com/sayac007/-wkr-automotive-forecasting-lab/blob/66ba9f02319230406ab34000cce092fd6fafb62b/R/generate_calendar_de.R)
+ist über den Commit abrufbar. Die spätere Version 1.1.0 ergänzt Halloween und
+Valentinstag; die unten stehenden Originalhashes beziehen sich auf Version 1.0.0.
+
 ## Ergebnis
 
 | Kennzahl | Tatsächlicher Wert |

@@ -2,6 +2,7 @@
 
 [`R/generate_calendar_de.R`](../R/generate_calendar_de.R) erzeugt einen Einkaufs-
 und Ferienkalender nach den am 28.10.2026 beschriebenen fachlichen Regeln.
+Regelversion 1.1.0 ergänzt Halloween und Valentinstag im selben R-Skript.
 Das Skript benötigt weder HypoForge noch Agentic Analytics Studio und verändert
 weder die manuelle Kalenderreferenz noch die Umsatzgeneratoren oder Modelle.
 
@@ -19,6 +20,14 @@ Bundesland. Öffnungszeiten und halbe Verkaufstage werden nicht modelliert.
 | Karfreitag / Ostermontag | Letzter Einkaufstag vor jedem der beiden Feiertage; normalerweise Donnerstag und Samstag. Beide in `Karfreitag`, wie bisher in WKR. |
 | Pfingstmontag / Himmelfahrt | Normalerweise Samstag / Mittwoch davor |
 | Neujahr | Letzter Einkaufstag davor in `Silvester`; auch über die Jahresgrenze |
+| Halloween, 31.10. | Letzter Einkaufstag davor: Montag 31.10.2022 → Samstag 29.10., KW 43 statt KW 44; Dienstag 31.10.2023 → Montag 30.10., KW 44 |
+| Valentinstag, 14.02. | Letzter Einkaufstag davor: Montag 14.02.2022 → Samstag 12.02., KW 6 statt KW 7; Dienstag 14.02.2023 → Montag 13.02., KW 7 |
+
+Die Spalten `Halloween` und `Valentinstag` stehen sowohl in der Tagesausgabe als
+auch als binäre Wochenmerkmale zur Verfügung. Auch für diese Anlässe wird der
+Anlasstag selbst nicht als Einkaufstag markiert. Sonntage und gesetzliche
+Feiertage werden bei der Suche nach dem letzten möglichen Einkaufstag übersprungen.
+Die Anlässe werden dadurch nicht selbst zu gesetzlichen Feiertagen.
 
 Die beiden Weihnachtsfeiertage führen gewöhnlich zum selben letzten Einkaufstag.
 `Einkauf_vor_Feiertag` umfasst zusätzlich alle aus der Quelle geladenen regionalen
@@ -105,7 +114,7 @@ gesichert. Interne Belege gehören nicht ins öffentliche Repository.
 | Datei | Inhalt |
 |---|---|
 | `calendar_daily.csv` | Vollständiger Tageskalender je Bundesland einschließlich Sonntagen und Feiertagen |
-| `datumlanderferienfeiertage.csv` | Bisheriges WKR-Schema ohne Sonntage und gesetzliche Feiertage; erweitertes `Ferien` |
+| `datumlanderferienfeiertage.csv` | Bisherige WKR-Spalten plus `Halloween` und `Valentinstag`, ohne Sonntage und gesetzliche Feiertage; erweitertes `Ferien` |
 | `calendar_weekly.csv` | ISO-Wochen je Bundesland; Wochenbeginn Montag, ISO-Jahr und KW getrennt |
 | `sources/manifest.csv` und JSON-Originale | Tatsächlicher Quellenstand |
 | `manifest.json` | Regelversion, Laufzeit, Quellen, Datei-Prüfsummen und ggf. Hash der manuellen Referenz |
@@ -130,6 +139,8 @@ ausgegebenen Tage.
 Es gibt keine stillschweigende bundesweite Gewichtung. Die bestehenden,
 unterschiedlichen WKR-Gewichtungen in Umsatzgenerator und Prognosemodell bleiben
 unverändert.
+Fehlen die neuen Spalten in der Handreferenz, werden sie im Vergleich ausdrücklich
+als `not_in_reference` ausgewiesen und nicht durch erfundene Nullen ergänzt.
 
 ## Offline wiederholen und testen
 
@@ -147,7 +158,7 @@ Ausführungsmanifest sind naturgemäß neu.
 Die Offline-Tests decken die oben beschriebenen Einkaufs-/Ferienregeln,
 Jahresgrenzen, Schaltjahr, ISO-Woche 53 sowie ungültige und unvollständige Eingaben
 ab. Sie sind konstruierte Regelprüfungen, kein empirischer Datensatz.
-Der [tatsächliche Vollvergleich 2017–2026](../results/calendar_r/2026-10-28/README.md)
+Der [tatsächliche Vollvergleich 2017–2026 der Regelversion 1.0.0](../results/calendar_r/2026-10-28/README.md)
 enthält alle verbleibenden Abweichungen und Zeilenunterschiede zur manuellen Referenz.
 Der historische Vergleich mit 467 Ferien- und 42 Weihnachtsabweichungen steht in
 [ADR 0003](decisions/0003-first-azure-ml-job.md). Ein neuer R-Lauf ist davon getrennt

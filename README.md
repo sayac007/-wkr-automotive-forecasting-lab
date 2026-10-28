@@ -103,7 +103,8 @@ pyproject.toml        Python package, dependencies and development-tool configur
 [`R/generate_calendar_de.R`](R/generate_calendar_de.R) generates daily and ISO-week
 features using the last possible shopping day before a holiday and explicit
 Saturday extensions around school holidays. It preserves the manual reference
-and can compare against it. [German rules, source capture and run instructions](docs/calendar_generator_r.md).
+and can compare against it. Halloween and Valentine's Day use the same shopping-day
+rule and appear in daily and weekly outputs. [German rules, source capture and run instructions](docs/calendar_generator_r.md).
 Offline checks: `Rscript tests/test_calendar_de.R`.
 
 R scripts use relative project paths and fixed seeds where synthetic data are generated. Azure ML jobs declare their code, inputs, outputs, environment and compute in version-controlled YAML.

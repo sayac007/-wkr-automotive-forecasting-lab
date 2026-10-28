@@ -62,6 +62,32 @@ easter <- build("2023-04-03", "2023-04-10")
 expect(flag(easter, "2023-04-06", "Karfreitag") == 1L)
 expect(flag(easter, "2023-04-08", "Karfreitag") == 1L)
 
+# Shopping events use the last eligible day BEFORE the event, just like holidays.
+# Monday Halloween -> prior week; Tuesday/Saturday/Sunday -> same ISO week.
+for (case in list(
+  c("2022-10-24", "2022-11-06", "2022-10-29", "Halloween", "43", "44"),
+  c("2023-10-23", "2023-11-05", "2023-10-30", "Halloween", "44", "43"),
+  c("2020-10-26", "2020-11-01", "2020-10-30", "Halloween", "44", "45"),
+  c("2021-10-25", "2021-10-31", "2021-10-30", "Halloween", "43", "44"),
+  c("2022-02-07", "2022-02-20", "2022-02-12", "Valentinstag", "6", "7"),
+  c("2023-02-06", "2023-02-19", "2023-02-13", "Valentinstag", "7", "6"),
+  c("2021-02-08", "2021-02-14", "2021-02-13", "Valentinstag", "6", "7")
+)) {
+  event <- build(case[1], case[2], public = empty_periods())
+  expect(flag(event, case[3], case[4]) == 1L)
+  expect(sum(event[[case[4]]]) == 1L)
+  week <- weekly_calendar_de(event)
+  expect(week[[case[4]]][week$KW == as.integer(case[5])] == 1L)
+  expect(all(week[[case[4]]][week$KW == as.integer(case[6])] == 0L))
+}
+# Reformation Day can coincide with Halloween, but Halloween is not a new legal holiday.
+halloween <- build("2022-10-24", "2022-11-06", public = period("2022-10-31"))
+expect(flag(halloween, "2022-10-29", "Halloween") == 1L)
+expect(flag(halloween, "2022-10-31", "Halloween") == 0L)
+expect(flag(halloween, "2022-10-31", "Feiertag") == 1L)
+valentine <- build("2023-02-13", "2023-02-14", public = empty_periods())
+expect(flag(valentine, "2023-02-14", "Feiertag") == 0L)
+
 # A documented local Monday off + Tuesday public holiday makes a four-day break.
 bridge <- build("2023-09-25", "2023-10-08", extra = period("2023-10-02"))
 expect(flag(bridge, "2023-09-30", "Ferien") == 1L)
@@ -144,6 +170,13 @@ comparison <- compare_calendar_de(changed, reference, iso_date("2023-12-18"),
                                    iso_date("2023-12-31"), "Berlin")
 expect(comparison$summary$Weihnachten$mismatches == 1L)
 expect(identical(reference, generated))
+# Historical references lack the new event columns: report unavailable, never fake zeros.
+old_shape <- reference[LEGACY_CALENDAR_COLUMNS]
+comparison <- compare_calendar_de(generated, old_shape, iso_date("2023-12-18"),
+                                   iso_date("2023-12-31"), "Berlin")
+expect(setequal(comparison$summary$not_in_reference, c("Halloween", "Valentinstag")))
+expect(is.null(comparison$summary$Halloween) && is.null(comparison$summary$Valentinstag))
+expect(comparison$summary$Weihnachten$mismatches == 0L)
 comparison <- compare_calendar_de(generated[-1, ], reference, iso_date("2023-12-18"),
                                    iso_date("2023-12-31"), "Berlin")
 expect(comparison$summary$legacy_only_rows == 1L)
