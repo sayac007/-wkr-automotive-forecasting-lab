@@ -99,8 +99,10 @@ days <- as.Date(bridge$Datum, "%d.%m.%Y")
 expect(sum(bridge$Schulfrei[days >= iso_date("2023-09-30") &
                            days <= iso_date("2023-10-03")]) == 4L)
 w <- weekly_calendar_de(bridge)
-expect(w$Ferientage[w$KW == 39L] == 2L)
-expect(abs(w$Ferienanteil[w$KW == 39L] - 2 / 7) < 1e-15)
+expect(w$Ferientage[w$KW == 39L] == 1L)
+expect(abs(w$Ferienanteil[w$KW == 39L] - 1 / 6) < 1e-15)
+expect(w$Ferientage_Kalender[w$KW == 39L] == 2L)
+expect(abs(w$Ferienanteil_Kalender[w$KW == 39L] - 2 / 7) < 1e-15)
 
 # Tuesday school-holiday start, public-holiday Monday -> Sat/Sun/Mon extension.
 tuesday <- build("2023-04-24", "2023-05-07", school = period("2023-05-02", "2023-05-05"))
@@ -184,5 +186,55 @@ expect(nrow(comparison$row_differences) == 1L &&
          comparison$row_differences$Presence == "legacy_only")
 reject(compare_calendar_de(generated, rbind(reference, reference[1, ]),
                              iso_date("2023-12-18"), iso_date("2023-12-31"), "Berlin"))
+
+# School holidays count only actual potential shop-opening days.
+for (case in list(character(), "2023-08-15", c("2023-08-15", "2023-08-16"),
+                  "2023-08-20")) {
+  p <- if (length(case)) period(case) else empty_periods()
+  week <- weekly_calendar_de(build("2023-08-14", "2023-08-20", public = p,
+                                    school = period("2023-08-14", "2023-08-20")))
+  expected <- if (identical(case, "2023-08-20")) 6L else 6L - length(case)
+  expect(week$Verkaufstage == expected)
+  expect(week$Ferientage == expected)
+  expect(week$Ferienanteil == 1)
+  expect(week$Ferientage_Kalender == 7L)
+}
+# A wholly closed partial week has no defined holiday/opening-day fraction.
+closed <- weekly_calendar_de(build("2023-01-01", "2023-01-01"))
+expect(closed$Verkaufstage == 0L && is.na(closed$Ferienanteil))
+
+# Explicitly constructed populations check arithmetic, not empirical weights.
+population <- data.frame(code = c(names(DE_STATES), "DE"),
+  Bundesland = c(unname(DE_STATES), "Deutschland"),
+  population = c(ifelse(names(DE_STATES) == "DE-BY", 60L, 16L), 300L),
+  reference_date = "2025-12-31", source = "unit-test population")
+weights <- population_weights_de(population)
+expect(abs(sum(weights$weight) - 1) < 1e-15)
+expect(weights$weight[weights$code == "DE-BY"] == .2)
+week <- weekly_calendar_de(build_calendar_de("2023-08-14", "2023-08-20",
+  unname(DE_STATES), empty_periods(), empty_periods()))
+week$Ferientage <- ifelse(week$Bundesland == "Bayern", 5, 3)
+week$Verkaufstage <- ifelse(week$Bundesland == "Bayern", 5, 6)
+week$Ferienanteil <- week$Ferientage / week$Verkaufstage
+de <- aggregate_weekly_de(week, population)
+expect(abs(de$Ferientage_gewichtet - 3.4) < 1e-14)
+expect(abs(de$Ladenoeffnungstage_gewichtet - 5.8) < 1e-14)
+expect(abs(de$Ferienanteil_gewichtet - .6) < 1e-14)
+expect(abs(de$Ferienanteil_aus_gewichteten_Tagen - 3.4 / 5.8) < 1e-14)
+expect(abs(de$Bevoelkerungsabdeckung - 1) < 1e-14)
+reject(aggregate_weekly_de(week[-1, ], population))
+reject(aggregate_weekly_de(rbind(week, week[1, ]), population))
+reject(population_weights_de(population[-1, ]))
+bad <- population; bad$population[bad$code == "DE"] <- 301L
+reject(population_weights_de(bad))
+bad <- population; bad$reference_date[1] <- "2024-12-31"
+reject(population_weights_de(bad))
+bad <- population; bad$population[1] <- -1
+reject(population_weights_de(bad))
+bad <- population; bad$code[1] <- bad$code[2]
+reject(population_weights_de(bad))
+# The committed official snapshot reconciles exactly, including the separate DE row.
+real <- read.csv("data/reference/population_de_2025-12-31.csv", colClasses = "character")
+expect(sum(population_weights_de(real)$population) == 83467117)
 
 cat("Passed", checks, "R calendar checks.\n")

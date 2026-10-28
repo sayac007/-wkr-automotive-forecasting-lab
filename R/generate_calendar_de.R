@@ -7,6 +7,10 @@ WKR_STATES <- c(
   "DE-NI" = "Niedersachsen", "DE-NW" = "Nordrhein-Westfalen",
   "DE-ST" = "Sachsen-Anhalt", "DE-TH" = "Thüringen"
 )
+DE_STATES <- c(WKR_STATES, "DE-BW" = "Baden-Württemberg", "DE-BY" = "Bayern",
+  "DE-HH" = "Hamburg", "DE-HE" = "Hessen", "DE-MV" = "Mecklenburg-Vorpommern",
+  "DE-RP" = "Rheinland-Pfalz", "DE-SL" = "Saarland", "DE-SN" = "Sachsen",
+  "DE-SH" = "Schleswig-Holstein")
 LEGACY_CALENDAR_COLUMNS <- c(
   "Datum", "Bundesland", "Ferien", "Karfreitag", "Weihnachten",
   "Silvester", "ErsterMai", "Pfingsten", "Himmelfahrt"
@@ -73,7 +77,7 @@ build_calendar_de <- function(start, end, states, public, school,
                               extra_school = empty_periods()) {
   start <- iso_date(start); end <- iso_date(end)
   if (length(start) != 1L || length(end) != 1L || start > end ||
-      !length(states) || anyDuplicated(states) || any(!states %in% WKR_STATES)) {
+      !length(states) || anyDuplicated(states) || any(!states %in% DE_STATES)) {
     stop("Invalid calendar range/states")
   }
   public <- check_periods(public, states)
@@ -184,8 +188,12 @@ weekly_calendar_de <- function(daily) {
       ISO_Jahr = year, KW = as.integer(first - first_monday) %/% 7L + 1L,
       Kalendertage = length(ii), VollstaendigeWoche = length(ii) == 7L,
       Schulferientage = sum(daily$Schulferien[ii]),
-      Ferientage = sum(daily$Ferien[ii]),
-      Ferienanteil = mean(daily$Ferien[ii]),
+      Ferientage_Kalender = sum(daily$Ferien[ii]),
+      Ferienanteil_Kalender = mean(daily$Ferien[ii]),
+      Ferientage = sum(daily$Ferien[ii] * daily$Verkaufstag[ii]),
+      Ferienanteil = if (sum(daily$Verkaufstag[ii]) > 0L)
+        sum(daily$Ferien[ii] * daily$Verkaufstag[ii]) / sum(daily$Verkaufstag[ii]) else NA_real_,
+      Feiertage_Mo_Sa = sum(daily$Feiertag[ii] * (weekday_monday(dates[ii]) != 6L)),
       Feiertage = sum(daily$Feiertag[ii]), Verkaufstage = sum(daily$Verkaufstag[ii]),
       stringsAsFactors = FALSE
     )
@@ -197,6 +205,58 @@ weekly_calendar_de <- function(daily) {
   out <- do.call(rbind, rows)
   rownames(out) <- NULL
   out[order(out$Bundesland, out$Wochenbeginn), ]
+}
+
+population_weights_de <- function(population) {
+  required <- c("code", "Bundesland", "population", "reference_date", "source")
+  if (!is.data.frame(population) || !all(required %in% names(population)) ||
+      nrow(population) != 17L || anyNA(population[required]) ||
+      anyDuplicated(population$code) ||
+      !setequal(population$code, c(names(DE_STATES), "DE")) ||
+      any(!nzchar(trimws(population$source)))) stop("Need evidenced population for all 16 states and DE")
+  n <- suppressWarnings(as.numeric(as.character(population$population)))
+  if (anyNA(n) || any(!is.finite(n) | n <= 0 | n != floor(n))) stop("Invalid population")
+  reference <- unique(as.character(iso_date(population$reference_date)))
+  if (length(reference) != 1L) stop("Population reference dates must agree")
+  total <- n[population$code == "DE"]
+  if (sum(n[population$code != "DE"]) != total) stop("State populations do not reconcile with Germany")
+  x <- population[population$code != "DE", , drop = FALSE]
+  if (any(x$Bundesland != unname(DE_STATES[x$code]))) stop("Population state identity mismatch")
+  x$population <- n[population$code != "DE"]
+  x$weight <- x$population / total
+  x
+}
+
+aggregate_weekly_de <- function(weekly, population) {
+  weights <- population_weights_de(population)
+  if (!setequal(unique(weekly$Bundesland), unname(DE_STATES)) ||
+      anyDuplicated(paste(weekly$Bundesland, weekly$Wochenbeginn))) {
+    stop("Germany aggregation requires each of the 16 states, without duplicate weeks")
+  }
+  groups <- split(seq_len(nrow(weekly)), weekly$Wochenbeginn)
+  out <- lapply(groups, function(ii) {
+    x <- weekly[ii, , drop = FALSE]
+    if (nrow(x) != 16L || !setequal(x$Bundesland, weights$Bundesland) ||
+        length(unique(x$Kalendertage)) != 1L) stop("Missing or inconsistent state week")
+    if (anyNA(x[c("Ferientage", "Verkaufstage")]) ||
+        any(!is.finite(x$Ferientage) | !is.finite(x$Verkaufstage)) ||
+        any(x$Ferientage < 0 | x$Verkaufstage > 6 | x$Verkaufstage < 0 |
+              x$Ferientage > x$Verkaufstage)) stop("Invalid state opening/holiday counts")
+    w <- weights$weight[match(x$Bundesland, weights$Bundesland)]
+    f <- sum(w * x$Ferientage); o <- sum(w * x$Verkaufstage)
+    data.frame(Wochenbeginn = x$Wochenbeginn[1L], ISO_Jahr = x$ISO_Jahr[1L],
+      KW = x$KW[1L], Kalendertage = x$Kalendertage[1L],
+      VollstaendigeWoche = all(x$VollstaendigeWoche),
+      Bevoelkerungsstichtag = weights$reference_date[1L],
+      Bevoelkerungsabdeckung = sum(w),
+      Ferientage_gewichtet = f, Ladenoeffnungstage_gewichtet = o,
+      Ferienanteil_gewichtet = if (anyNA(x$Ferienanteil)) NA_real_ else sum(w * x$Ferienanteil),
+      Ferienanteil_aus_gewichteten_Tagen = if (o > 0) f / o else NA_real_,
+      Feiertagsscope = "landesweite_Feiertage_ohne_kommunale_Sonderfaelle",
+      stringsAsFactors = FALSE)
+  })
+  result <- do.call(rbind, out); rownames(result) <- NULL
+  result[order(result$Wochenbeginn), ]
 }
 
 compare_calendar_de <- function(generated, legacy, start, end, states) {
@@ -303,7 +363,7 @@ fetch_calendar_periods <- function(start, end, codes, output, cache = NULL) {
       for (code in codes) {
         if (!item$global && !code %in% unlist(item$counties)) next
         periods$PublicHolidays <- rbind(periods$PublicHolidays, data.frame(
-          Bundesland = unname(WKR_STATES[code]), startDate = as.character(day),
+          Bundesland = unname(DE_STATES[code]), startDate = as.character(day),
           endDate = as.character(day), source = url, stringsAsFactors = FALSE
         ))
       }
@@ -316,7 +376,7 @@ fetch_calendar_periods <- function(start, end, codes, output, cache = NULL) {
                   iso_date(sprintf("%04d-12-%02d", year, c(25L, 26L))))
     for (code in codes) {
       found <- periods$PublicHolidays$startDate[
-        periods$PublicHolidays$Bundesland == WKR_STATES[code]]
+        periods$PublicHolidays$Bundesland == DE_STATES[code]]
       if (!all(as.character(national) %in% found)) stop("Missing national public holiday")
     }
   }
@@ -331,10 +391,10 @@ fetch_calendar_periods <- function(start, end, codes, output, cache = NULL) {
         !length(response)) stop("Empty whole-year school-holiday response")
     for (item in response) {
       if (!all(c("startDate", "endDate") %in% names(item))) stop("Invalid school response")
-        row <- data.frame(Bundesland = unname(WKR_STATES[code]),
+        row <- data.frame(Bundesland = unname(DE_STATES[code]),
                           startDate = item$startDate, endDate = item$endDate,
                           source = url, stringsAsFactors = FALSE)
-        check_periods(row, unname(WKR_STATES[codes]))
+        check_periods(row, unname(DE_STATES[codes]))
         periods$SchoolHolidays <- rbind(periods$SchoolHolidays, row)
     }
   }
@@ -346,11 +406,11 @@ calendar_main <- function(args = commandArgs(trailingOnly = TRUE)) {
   usage <- paste(
     "Rscript R/generate_calendar_de.R --start-year 2017 --end-year 2026",
     "--output NEW_DIRECTORY [--states DE-BE,DE-NI] [--extra-school CSV]",
-    "[--source-cache PREVIOUS_OUTPUT/sources] [--legacy CSV]"
+    "[--source-cache PREVIOUS_OUTPUT/sources] [--legacy CSV] [--population CSV]"
   )
   if ("--help" %in% args) { cat(usage, "\n"); return(invisible(NULL)) }
   allowed <- c("--start-year", "--end-year", "--output", "--states",
-               "--extra-school", "--source-cache", "--legacy")
+               "--extra-school", "--source-cache", "--legacy", "--population")
   if (!length(args) || length(args) %% 2L ||
       any(!args[seq(1L, length(args), 2L)] %in% allowed) ||
       anyDuplicated(args[seq(1L, length(args), 2L)])) stop(usage)
@@ -363,10 +423,18 @@ calendar_main <- function(args = commandArgs(trailingOnly = TRUE)) {
   if (years[1] < 1584L || years[2] > 9997L || years[1] > years[2]) stop("Invalid years")
   start <- iso_date(sprintf("%04d-01-01", years[1]))
   end <- iso_date(sprintf("%04d-12-31", years[2]))
-  codes <- if (is.null(opt[["--states"]])) names(WKR_STATES) else
+  codes <- if (is.null(opt[["--states"]])) {
+    if (is.null(opt[["--population"]])) names(WKR_STATES) else names(DE_STATES)
+  } else
     strsplit(opt[["--states"]], ",", fixed = TRUE)[[1]]
-  if (!length(codes) || anyDuplicated(codes) || any(!codes %in% names(WKR_STATES))) {
-    stop("States must use the seven supported WKR subdivision codes")
+  if (!length(codes) || anyDuplicated(codes) || any(!codes %in% names(DE_STATES))) {
+    stop("States must use supported German subdivision codes")
+  }
+  population <- NULL
+  if (!is.null(opt[["--population"]])) {
+    population <- read.csv(opt[["--population"]], colClasses = "character", fileEncoding = "UTF-8")
+    population_weights_de(population)
+    if (!setequal(codes, names(DE_STATES))) stop("Population aggregation needs all 16 states")
   }
   output <- opt[["--output"]]
   if (file.exists(output)) stop("Output already exists; choose a new directory")
@@ -375,14 +443,14 @@ calendar_main <- function(args = commandArgs(trailingOnly = TRUE)) {
   if (!is.null(opt[["--extra-school"]])) {
     extra <- read.csv(opt[["--extra-school"]], colClasses = "character",
                       check.names = FALSE, fileEncoding = "UTF-8")
-    check_periods(extra, unname(WKR_STATES[codes]))
+    check_periods(extra, unname(DE_STATES[codes]))
   }
   if (!dir.create(output, recursive = TRUE)) stop("Cannot create output directory")
   previous_timeout <- getOption("timeout")
   on.exit(options(timeout = previous_timeout), add = TRUE)
   options(timeout = max(60L, previous_timeout))
   input <- fetch_calendar_periods(start, end, codes, output, opt[["--source-cache"]])
-  daily <- build_calendar_de(start, end, unname(WKR_STATES[codes]),
+  daily <- build_calendar_de(start, end, unname(DE_STATES[codes]),
                              input$public, input$school, extra)
   legacy_shape <- daily[daily$Verkaufstag == 1L, CALENDAR_COLUMNS, drop = FALSE]
   weekly <- weekly_calendar_de(daily)
@@ -392,6 +460,13 @@ calendar_main <- function(args = commandArgs(trailingOnly = TRUE)) {
              row.names = FALSE, fileEncoding = "UTF-8")
   write.csv2(weekly, file.path(output, "calendar_weekly.csv"), row.names = FALSE,
              fileEncoding = "UTF-8")
+  if (!is.null(population)) {
+    write.csv2(aggregate_weekly_de(weekly, population), file.path(output, "calendar_weekly_de.csv"),
+               row.names = FALSE, fileEncoding = "UTF-8")
+    if (!file.copy(opt[["--population"]], file.path(output, "population_original.csv"))) {
+      stop("Could not preserve population evidence")
+    }
+  }
   if (!is.null(opt[["--extra-school"]])) {
     if (!file.copy(opt[["--extra-school"]], file.path(output, "extra_school_original.csv"))) {
       stop("Could not preserve additional school-day evidence")
@@ -402,7 +477,7 @@ calendar_main <- function(args = commandArgs(trailingOnly = TRUE)) {
                      fileEncoding = "UTF-8")
     names(old) <- sub("^\ufeff", "", names(old))
     comparison <- compare_calendar_de(legacy_shape, old, start, end,
-                                      unname(WKR_STATES[codes]))
+                                      unname(DE_STATES[codes]))
     jsonlite::write_json(comparison$summary,
                          file.path(output, "calendar_comparison_summary.json"),
                          auto_unbox = TRUE, pretty = TRUE, na = "null", digits = NA)
@@ -418,17 +493,21 @@ calendar_main <- function(args = commandArgs(trailingOnly = TRUE)) {
     unname(tools::md5sum(sub("^--file=", "", script)))
   } else NULL
   manifest <- list(
-    rules_version = "1.1.0", start = as.character(start), end = as.character(end),
+    rules_version = "1.2.0", start = as.character(start), end = as.character(end),
     generator_md5 = generator_md5,
     created_at_utc = format(Sys.time(), "%Y-%m-%dT%H:%M:%SZ", tz = "UTC"),
-    states = as.list(WKR_STATES[codes]), R_version = R.version.string,
+    states = as.list(DE_STATES[codes]), R_version = R.version.string,
     jsonlite_version = as.character(utils::packageVersion("jsonlite")),
     shopping_rule = "last preceding Mon-Sat excluding regional public holidays",
     school_rule = paste(
       "Monday start extends to Sat/Sun; Tuesday start with public-holiday Monday",
       "extends to Sat/Sun/Mon; Friday end extends to Saturday unless a public holiday."
     ),
-    school_limitations = "Unlisted local movable days remain unknown; no national weighting.",
+    school_limitations = "Unlisted local movable days remain unknown; local partial-state public holidays not fully modeled.",
+    population_weighting = if (is.null(population)) NULL else list(
+      reference_date = unique(population$reference_date),
+      rule = "Fixed state population divided by official DE population; no renormalization",
+      md5 = unname(tools::md5sum(opt[["--population"]]))),
     attribution = paste("School holidays: OpenHolidays API (CC BY 4.0).",
                          "Public holidays: Nager.Date API. Own shopping/extension derivations."),
     source_policy = "Captured API bytes; MD5 detects byte changes, not source authenticity.",

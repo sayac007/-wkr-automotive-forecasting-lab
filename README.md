@@ -105,9 +105,12 @@ features using the last possible shopping day before a holiday and explicit
 Saturday extensions around school holidays. It preserves the manual reference
 and can compare against it. Halloween and Valentine's Day use the same shopping-day
 rule and appear in daily and weekly outputs. [German rules, source capture and run instructions](docs/calendar_generator_r.md).
+Version 1.2 counts school holidays only on shop-opening days. Optional official
+population inputs enable aggregation over all 16 states into a German weekly index;
+counts and normalized shares are separate outputs, with the public-holiday scope explicit.
 Offline checks: `Rscript tests/test_calendar_de.R`.
 
-Ready-to-use [ZIP with the R script and all three generated CSV files](downloads/WKR_Kalender_2017-2026_R_und_CSV.zip)
+Ready-to-use [ZIP with the R script, population inputs and four generated calendar CSVs](downloads/WKR_Kalender_2017-2026_R_und_CSV.zip)
 for 2017–2026: [contents, download instructions and checksum](downloads/README.md).
 
 R scripts use relative project paths and fixed seeds where synthetic data are generated. Azure ML jobs declare their code, inputs, outputs, environment and compute in version-controlled YAML.

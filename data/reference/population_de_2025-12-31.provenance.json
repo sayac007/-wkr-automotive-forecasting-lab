@@ -1,0 +1,33 @@
+{
+  "publisher": "Statistisches Bundesamt (Destatis)",
+  "tables": [
+    "12411-0010",
+    "12411-0001"
+  ],
+  "unit": "persons (BEVSTD$QMU: Anzahl)",
+  "reference_date": "2025-12-31",
+  "retrieval_date": "2026-10-28",
+  "retrieval_precision": "day",
+  "source_status": "e (preserved source code)",
+  "population_total": 83467117,
+  "state_sum": 83467117,
+  "weighting": "Fixed snapshot for retrospective calendar weighting, not historical point-in-time population",
+  "csv_sha256": "9f411a570d66a259516ef72125168bfd0e418b9d4523eec5803159d63512d7da",
+  "sources": [
+    {
+      "url": "https://genesis.destatis.de/genesis/api/rest/tables/12411-0010/data",
+      "bytes": 16007,
+      "sha256": "69cabee8ced6ef353e7b552f9545d44db8a1dcd5c65fcdfa1186b8655de789cb"
+    },
+    {
+      "url": "https://genesis.destatis.de/genesis/api/rest/tables/12411-0001/data",
+      "bytes": 2738,
+      "sha256": "66ea6778c99c2d9024dd80688dd6fe3d09ce9f7b7fb6b6059f4fc23a1a2e2e96"
+    }
+  ],
+  "license_identifier": "dl-de/by-2-0",
+  "license_url": "https://www.govdata.de/dl-de/by-2-0",
+  "license_evidence_url": "https://www.destatis.de/DE/Service/Impressum/copyright-genesis-online.html",
+  "license_evidence_reviewed_on": "2026-10-28",
+  "attribution": "Datenquelle: Statistisches Bundesamt (Destatis), GENESIS-Online; Datenlizenz by-2-0; eigene Auswahl/Darstellung und Berechnung."
+}

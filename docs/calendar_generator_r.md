@@ -2,7 +2,8 @@
 
 [`R/generate_calendar_de.R`](../R/generate_calendar_de.R) erzeugt einen Einkaufs-
 und Ferienkalender nach den am 28.10.2026 beschriebenen fachlichen Regeln.
-Regelversion 1.1.0 ergänzt Halloween und Valentinstag im selben R-Skript.
+Regelversion 1.2.0 zählt Ferien nur an Ladenöffnungstagen und ergänzt die
+Bevölkerungsgewichtung über alle 16 Länder. Halloween und Valentinstag bleiben enthalten.
 Das Skript benötigt weder HypoForge noch Agentic Analytics Studio und verändert
 weder die manuelle Kalenderreferenz noch die Umsatzgeneratoren oder Modelle.
 
@@ -71,10 +72,11 @@ Das Ausgabeziel muss neu sein; bestehende Ergebnisse werden nicht überschrieben
 Fehlende Abhängigkeiten, ungültige Eingaben oder gescheiterte Abrufe führen zum
 Abbruch. Ein unvollständiger Abruf ist kein erfolgreicher Ergebnislauf.
 
-Standard sind die sieben bisherigen WKR-Bundesländer: Berlin, Brandenburg,
+Ohne Bevölkerungsdatei sind die sieben bisherigen WKR-Bundesländer Standard: Berlin, Brandenburg,
 Bremen, Niedersachsen, Nordrhein-Westfalen, Sachsen-Anhalt, Thüringen.
-Eine Teilmenge wählen: `--states DE-BE,DE-NI`. Ein Generator für alle 16
-Bundesländer ist damit noch nicht implementiert.
+Eine Teilmenge wählen: `--states DE-BE,DE-NI`. Alle 16 Länder werden unterstützt.
+Mit `--population` werden standardmäßig alle 16 gewählt; eine Deutschlandaggregation
+aus einer Teilmenge wird abgewiesen.
 
 Schulferienquelle: [OpenHolidays API](https://www.openholidaysapi.org/), CC BY 4.0.
 Gesetzliche Feiertage: [Nager.Date API](https://date.nager.at/), mit Deutschland-,
@@ -130,17 +132,63 @@ Nicht gelistete lokale Tage bleiben eine Quellenlücke; eine Null beweist dort
 keine vollständige schulische Anwesenheit.
 
 Wochenmerkmale für Einkäufe verwenden **Maximum**: mindestens ein markierter Tag
-in der Woche → 1. `Ferientage` ist dagegen eine Summe und
-`Ferienanteil = Ferientage / Kalendertage`; ursprüngliche `Schulferientage` stehen
+in der Woche → 1. `Ferientage` zählt ab Version 1.2.0 nur Tage mit `Ferien=1`
+und `Verkaufstag=1`; `Ferienanteil = Ferientage / Verkaufstage`.
+Ursprüngliche `Schulferientage` stehen
 daneben. Angeschnittene Wochen an den Ausgabegrenzen erhalten die tatsächliche
 Tageszahl und `VollstaendigeWoche=FALSE`. Ihr Anteil bezieht sich nur auf die
-ausgegebenen Tage.
+ausgegebenen Tage. Der frühere Kalenderbezug bleibt als `Ferientage_Kalender`
+und `Ferienanteil_Kalender` erhalten. Bei null Öffnungstagen bleibt der Anteil NA.
 
-Es gibt keine stillschweigende bundesweite Gewichtung. Die bestehenden,
-unterschiedlichen WKR-Gewichtungen in Umsatzgenerator und Prognosemodell bleiben
-unverändert.
+Die bestehenden Umsatz-/Prognosemodelle werden nicht verändert.
 Fehlen die neuen Spalten in der Handreferenz, werden sie im Vergleich ausdrücklich
 als `not_in_reference` ausgewiesen und nicht durch erfundene Nullen ergänzt.
+
+## Bevölkerungsgewichtung für Deutschland
+
+```powershell
+Rscript R/generate_calendar_de.R --start-year 2017 --end-year 2026 --output kalender_de_neu --population data/reference/population_de_2025-12-31.csv
+```
+
+Die [Bevölkerungsdatei](../data/reference/population_de_2025-12-31.csv) enthält alle
+16 Länder und den separat veröffentlichten Deutschlandwert vom 31.12.2025.
+Ländersumme und Deutschlandwert sind exakt **83.467.117**. Die Gewichte gelten
+fest für den gesamten Kalenderzeitraum: retrospektive Standardisierung, keine
+Behauptung über historische Bevölkerungsstände oder damalige Datenverfügbarkeit.
+Die Eingabedatei wird unverändert ins Ausgabeziel kopiert und per Hash gebunden.
+
+Für Bundesland s und Woche w:
+
+- `w_s = Einwohner_s / Einwohner_Deutschland`, ohne Umnormierung einer Teilmenge.
+- `O_s = Anzahl Montag–Samstag ohne gesetzliche Feiertage des Landes`.
+- `F_s = Anzahl dieser Öffnungstage mit Ferienmarkierung`.
+- `Ferientage_gewichtet = Summe(w_s * F_s)`.
+- `Ladenoeffnungstage_gewichtet = Summe(w_s * O_s)`.
+- `Ferienanteil_gewichtet = Summe(w_s * F_s / O_s)`.
+- `Ferienanteil_aus_gewichteten_Tagen = Summe(w_s * F_s) / Summe(w_s * O_s)`.
+
+Die beiden Anteile sind wegen unterschiedlicher Nenner ausdrücklich getrennt.
+Eine volle Sommerferienwoche hat ohne Feiertag F=6, bei einem Feiertag auf
+Montag–Samstag F=5 und bei zwei F=4. Ein Feiertag am Sonntag reduziert O nicht
+zusätzlich. Feiertage werden auch außerhalb des Sommers ausgeschlossen.
+
+`calendar_weekly_de.csv` enthält eine Zeile je ISO-Woche, Kennzahlen, Stichtag,
+Bevölkerungsabdeckung und Feiertagsscope. Fehlende/mehrfache Länder, gemischte
+Stichtage, ungültige Einwohnerzahlen oder eine nicht mit Deutschland
+übereinstimmende Ländersumme führen zum Abbruch. Anteile bei O=0 bleiben NA.
+
+Die Feiertagsauflösung ist landesweit, ohne vollständige kommunale Sonderfälle.
+Mariä Himmelfahrt ist im Saarland landesweit Feiertag, in Bayern nur in einem Teil
+der Gemeinden. Der bayerische Anteil wird nicht erfunden oder pauschal als ganz
+Bayern angesetzt. Die Deutschland-CSV kennzeichnet deshalb ausdrücklich die
+Aggregation nach landesweit erfassten Feiertagen; ein exakt kommunal aufgelöster
+Öffnungskalender ist sie nicht.
+
+Datenquelle: Statistisches Bundesamt (Destatis), GENESIS-Online, Tabellen
+12411-0010 und 12411-0001, Abruf 28.10.2026;
+[Datenlizenz by-2-0](https://www.govdata.de/dl-de/by-2-0), eigene Auswahl/Darstellung
+und Berechnung. Original-URLs, Definition und Hashes stehen im
+[Herkunftsnachweis](../data/reference/population_de_2025-12-31.provenance.json).
 
 ## Offline wiederholen und testen
 
