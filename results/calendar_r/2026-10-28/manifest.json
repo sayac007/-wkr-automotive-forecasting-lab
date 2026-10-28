@@ -1,0 +1,613 @@
+{
+  "rules_version": "1.0.0",
+  "start": "2017-01-01",
+  "end": "2026-12-31",
+  "generator_md5": "759620f2caba0c276a5fa9d66ada96c2",
+  "created_at_utc": "2026-10-28T13:34:06Z",
+  "states": {
+    "DE-BE": "Berlin",
+    "DE-BB": "Brandenburg",
+    "DE-HB": "Bremen",
+    "DE-NI": "Niedersachsen",
+    "DE-NW": "Nordrhein-Westfalen",
+    "DE-ST": "Sachsen-Anhalt",
+    "DE-TH": "Thüringen"
+  },
+  "R_version": "R version 4.5.1 (2025-06-13)",
+  "jsonlite_version": "2.0.0",
+  "shopping_rule": "last preceding Mon-Sat excluding regional public holidays",
+  "school_rule": "Monday start extends to Sat/Sun; Tuesday start with public-holiday Monday extends to Sat/Sun/Mon; Friday end extends to Saturday unless a public holiday.",
+  "school_limitations": "Unlisted local movable days remain unknown; no national weighting.",
+  "attribution": "School holidays: OpenHolidays API (CC BY 4.0). Public holidays: Nager.Date API. Own shopping/extension derivations.",
+  "source_policy": "Captured API bytes; MD5 detects byte changes, not source authenticity.",
+  "legacy_reference": {
+    "file": "datumlanderferienfeiertage.csv",
+    "md5": "1e33cbb9ff725a359c6a903e2ce64379"
+  },
+  "sources": [
+    {
+      "file": "Nager-DE-2016.json",
+      "url": "https://date.nager.at/api/v3/PublicHolidays/2016/DE",
+      "retrieved_at_utc": "2026-10-28T13:31:05Z",
+      "md5": "4508a4a8b3dcaf0a9c5e79d41e350ad5"
+    },
+    {
+      "file": "Nager-DE-2017.json",
+      "url": "https://date.nager.at/api/v3/PublicHolidays/2017/DE",
+      "retrieved_at_utc": "2026-10-28T13:31:05Z",
+      "md5": "4828899b524e835241f998730c44e5e8"
+    },
+    {
+      "file": "Nager-DE-2018.json",
+      "url": "https://date.nager.at/api/v3/PublicHolidays/2018/DE",
+      "retrieved_at_utc": "2026-10-28T13:31:05Z",
+      "md5": "8daa7c8c72ce460307c39cd5c67991dd"
+    },
+    {
+      "file": "Nager-DE-2019.json",
+      "url": "https://date.nager.at/api/v3/PublicHolidays/2019/DE",
+      "retrieved_at_utc": "2026-10-28T13:31:05Z",
+      "md5": "35c8851ab96b40beb521080a4b96a6bc"
+    },
+    {
+      "file": "Nager-DE-2020.json",
+      "url": "https://date.nager.at/api/v3/PublicHolidays/2020/DE",
+      "retrieved_at_utc": "2026-10-28T13:31:05Z",
+      "md5": "b1c0dc20f540141f63aaa568ae988286"
+    },
+    {
+      "file": "Nager-DE-2021.json",
+      "url": "https://date.nager.at/api/v3/PublicHolidays/2021/DE",
+      "retrieved_at_utc": "2026-10-28T13:31:05Z",
+      "md5": "58cecda89d17212d916ad274a16c485c"
+    },
+    {
+      "file": "Nager-DE-2022.json",
+      "url": "https://date.nager.at/api/v3/PublicHolidays/2022/DE",
+      "retrieved_at_utc": "2026-10-28T13:31:05Z",
+      "md5": "1ea5e3a1303173a837b9f8191577a108"
+    },
+    {
+      "file": "Nager-DE-2023.json",
+      "url": "https://date.nager.at/api/v3/PublicHolidays/2023/DE",
+      "retrieved_at_utc": "2026-10-28T13:31:05Z",
+      "md5": "2aebc6085f87a2c8b7fd7affc309255f"
+    },
+    {
+      "file": "Nager-DE-2024.json",
+      "url": "https://date.nager.at/api/v3/PublicHolidays/2024/DE",
+      "retrieved_at_utc": "2026-10-28T13:31:05Z",
+      "md5": "6e26bb6bf31583118f7c61aed5a94460"
+    },
+    {
+      "file": "Nager-DE-2025.json",
+      "url": "https://date.nager.at/api/v3/PublicHolidays/2025/DE",
+      "retrieved_at_utc": "2026-10-28T13:31:05Z",
+      "md5": "3a398888f1d5a851a3ea90fa005e6523"
+    },
+    {
+      "file": "Nager-DE-2026.json",
+      "url": "https://date.nager.at/api/v3/PublicHolidays/2026/DE",
+      "retrieved_at_utc": "2026-10-28T13:31:05Z",
+      "md5": "266edb80d717a4f6c79ad427105405e7"
+    },
+    {
+      "file": "Nager-DE-2027.json",
+      "url": "https://date.nager.at/api/v3/PublicHolidays/2027/DE",
+      "retrieved_at_utc": "2026-10-28T13:31:05Z",
+      "md5": "dce33d5a6f9a79fc39c60ed198d0297f"
+    },
+    {
+      "file": "DE-BE-SchoolHolidays-2016.json",
+      "url": "https://openholidaysapi.org/SchoolHolidays?countryIsoCode=DE&subdivisionCode=DE-BE&languageIsoCode=DE&validFrom=2016-12-25&validTo=2016-12-31",
+      "retrieved_at_utc": "2026-10-28T13:24:03Z",
+      "md5": "053963750e291b104abf489d0cb78253"
+    },
+    {
+      "file": "DE-BE-SchoolHolidays-2017.json",
+      "url": "https://openholidaysapi.org/SchoolHolidays?countryIsoCode=DE&subdivisionCode=DE-BE&languageIsoCode=DE&validFrom=2017-01-01&validTo=2017-12-31",
+      "retrieved_at_utc": "2026-10-28T13:24:04Z",
+      "md5": "440e0345aa116c775348fd2788be28b4"
+    },
+    {
+      "file": "DE-BE-SchoolHolidays-2018.json",
+      "url": "https://openholidaysapi.org/SchoolHolidays?countryIsoCode=DE&subdivisionCode=DE-BE&languageIsoCode=DE&validFrom=2018-01-01&validTo=2018-12-31",
+      "retrieved_at_utc": "2026-10-28T13:24:05Z",
+      "md5": "49e81d08dbf9fe3423f8028ee703b580"
+    },
+    {
+      "file": "DE-BE-SchoolHolidays-2019.json",
+      "url": "https://openholidaysapi.org/SchoolHolidays?countryIsoCode=DE&subdivisionCode=DE-BE&languageIsoCode=DE&validFrom=2019-01-01&validTo=2019-12-31",
+      "retrieved_at_utc": "2026-10-28T13:24:06Z",
+      "md5": "b62eaf8079709f5a6e5b0fb97be709fc"
+    },
+    {
+      "file": "DE-BE-SchoolHolidays-2020.json",
+      "url": "https://openholidaysapi.org/SchoolHolidays?countryIsoCode=DE&subdivisionCode=DE-BE&languageIsoCode=DE&validFrom=2020-01-01&validTo=2020-12-31",
+      "retrieved_at_utc": "2026-10-28T13:24:06Z",
+      "md5": "7b79fe59441cf6d40b57bcd5e6d47f40"
+    },
+    {
+      "file": "DE-BE-SchoolHolidays-2021.json",
+      "url": "https://openholidaysapi.org/SchoolHolidays?countryIsoCode=DE&subdivisionCode=DE-BE&languageIsoCode=DE&validFrom=2021-01-01&validTo=2021-12-31",
+      "retrieved_at_utc": "2026-10-28T13:24:06Z",
+      "md5": "7b98234cc4c816ac3bca9e0ae529a6ee"
+    },
+    {
+      "file": "DE-BE-SchoolHolidays-2022.json",
+      "url": "https://openholidaysapi.org/SchoolHolidays?countryIsoCode=DE&subdivisionCode=DE-BE&languageIsoCode=DE&validFrom=2022-01-01&validTo=2022-12-31",
+      "retrieved_at_utc": "2026-10-28T13:24:07Z",
+      "md5": "71bfa8e84fa9cf44621e3432d828242f"
+    },
+    {
+      "file": "DE-BE-SchoolHolidays-2023.json",
+      "url": "https://openholidaysapi.org/SchoolHolidays?countryIsoCode=DE&subdivisionCode=DE-BE&languageIsoCode=DE&validFrom=2023-01-01&validTo=2023-12-31",
+      "retrieved_at_utc": "2026-10-28T13:24:07Z",
+      "md5": "afdae0ca45c79df29164acbbf3841934"
+    },
+    {
+      "file": "DE-BE-SchoolHolidays-2024.json",
+      "url": "https://openholidaysapi.org/SchoolHolidays?countryIsoCode=DE&subdivisionCode=DE-BE&languageIsoCode=DE&validFrom=2024-01-01&validTo=2024-12-31",
+      "retrieved_at_utc": "2026-10-28T13:24:08Z",
+      "md5": "646713e97b772cf9c0817dc8667ced49"
+    },
+    {
+      "file": "DE-BE-SchoolHolidays-2025.json",
+      "url": "https://openholidaysapi.org/SchoolHolidays?countryIsoCode=DE&subdivisionCode=DE-BE&languageIsoCode=DE&validFrom=2025-01-01&validTo=2025-12-31",
+      "retrieved_at_utc": "2026-10-28T13:24:08Z",
+      "md5": "17f78779a76019976b3da4db805c6293"
+    },
+    {
+      "file": "DE-BE-SchoolHolidays-2026.json",
+      "url": "https://openholidaysapi.org/SchoolHolidays?countryIsoCode=DE&subdivisionCode=DE-BE&languageIsoCode=DE&validFrom=2026-01-01&validTo=2026-12-31",
+      "retrieved_at_utc": "2026-10-28T13:24:08Z",
+      "md5": "a3fcbaf4444c2bf469817ff5ff20a018"
+    },
+    {
+      "file": "DE-BE-SchoolHolidays-2027.json",
+      "url": "https://openholidaysapi.org/SchoolHolidays?countryIsoCode=DE&subdivisionCode=DE-BE&languageIsoCode=DE&validFrom=2027-01-01&validTo=2027-01-07",
+      "retrieved_at_utc": "2026-10-28T13:24:09Z",
+      "md5": "a851ca9dbb0eb4776e38829d95c61fb3"
+    },
+    {
+      "file": "DE-BB-SchoolHolidays-2016.json",
+      "url": "https://openholidaysapi.org/SchoolHolidays?countryIsoCode=DE&subdivisionCode=DE-BB&languageIsoCode=DE&validFrom=2016-12-25&validTo=2016-12-31",
+      "retrieved_at_utc": "2026-10-28T13:24:09Z",
+      "md5": "e4afa4e0e76c2e1095936cabd797be4f"
+    },
+    {
+      "file": "DE-BB-SchoolHolidays-2017.json",
+      "url": "https://openholidaysapi.org/SchoolHolidays?countryIsoCode=DE&subdivisionCode=DE-BB&languageIsoCode=DE&validFrom=2017-01-01&validTo=2017-12-31",
+      "retrieved_at_utc": "2026-10-28T13:24:09Z",
+      "md5": "8a3e3b637c9dd14bef71bbc50fba5e91"
+    },
+    {
+      "file": "DE-BB-SchoolHolidays-2018.json",
+      "url": "https://openholidaysapi.org/SchoolHolidays?countryIsoCode=DE&subdivisionCode=DE-BB&languageIsoCode=DE&validFrom=2018-01-01&validTo=2018-12-31",
+      "retrieved_at_utc": "2026-10-28T13:24:10Z",
+      "md5": "64d0fb070e187e2a3c34180b8f65b630"
+    },
+    {
+      "file": "DE-BB-SchoolHolidays-2019.json",
+      "url": "https://openholidaysapi.org/SchoolHolidays?countryIsoCode=DE&subdivisionCode=DE-BB&languageIsoCode=DE&validFrom=2019-01-01&validTo=2019-12-31",
+      "retrieved_at_utc": "2026-10-28T13:24:10Z",
+      "md5": "0a1ad4b047fcecc5e55a6a6e36ad0012"
+    },
+    {
+      "file": "DE-BB-SchoolHolidays-2020.json",
+      "url": "https://openholidaysapi.org/SchoolHolidays?countryIsoCode=DE&subdivisionCode=DE-BB&languageIsoCode=DE&validFrom=2020-01-01&validTo=2020-12-31",
+      "retrieved_at_utc": "2026-10-28T13:24:10Z",
+      "md5": "69093bf89996a486f079047f67ecf644"
+    },
+    {
+      "file": "DE-BB-SchoolHolidays-2021.json",
+      "url": "https://openholidaysapi.org/SchoolHolidays?countryIsoCode=DE&subdivisionCode=DE-BB&languageIsoCode=DE&validFrom=2021-01-01&validTo=2021-12-31",
+      "retrieved_at_utc": "2026-10-28T13:24:11Z",
+      "md5": "c38ace542ada03cf6120957c2a14c85d"
+    },
+    {
+      "file": "DE-BB-SchoolHolidays-2022.json",
+      "url": "https://openholidaysapi.org/SchoolHolidays?countryIsoCode=DE&subdivisionCode=DE-BB&languageIsoCode=DE&validFrom=2022-01-01&validTo=2022-12-31",
+      "retrieved_at_utc": "2026-10-28T13:24:11Z",
+      "md5": "beec2126e356b487d41a5426ae3802aa"
+    },
+    {
+      "file": "DE-BB-SchoolHolidays-2023.json",
+      "url": "https://openholidaysapi.org/SchoolHolidays?countryIsoCode=DE&subdivisionCode=DE-BB&languageIsoCode=DE&validFrom=2023-01-01&validTo=2023-12-31",
+      "retrieved_at_utc": "2026-10-28T13:24:11Z",
+      "md5": "96d08fb8228e21f1a67bd14988e5a443"
+    },
+    {
+      "file": "DE-BB-SchoolHolidays-2024.json",
+      "url": "https://openholidaysapi.org/SchoolHolidays?countryIsoCode=DE&subdivisionCode=DE-BB&languageIsoCode=DE&validFrom=2024-01-01&validTo=2024-12-31",
+      "retrieved_at_utc": "2026-10-28T13:24:12Z",
+      "md5": "ce38671387b305ac3db0e4e2529cf895"
+    },
+    {
+      "file": "DE-BB-SchoolHolidays-2025.json",
+      "url": "https://openholidaysapi.org/SchoolHolidays?countryIsoCode=DE&subdivisionCode=DE-BB&languageIsoCode=DE&validFrom=2025-01-01&validTo=2025-12-31",
+      "retrieved_at_utc": "2026-10-28T13:24:12Z",
+      "md5": "8da4a2553873a662afcd23400ec67e38"
+    },
+    {
+      "file": "DE-BB-SchoolHolidays-2026.json",
+      "url": "https://openholidaysapi.org/SchoolHolidays?countryIsoCode=DE&subdivisionCode=DE-BB&languageIsoCode=DE&validFrom=2026-01-01&validTo=2026-12-31",
+      "retrieved_at_utc": "2026-10-28T13:24:12Z",
+      "md5": "1b8bdea9ed15a885731771e622084f96"
+    },
+    {
+      "file": "DE-BB-SchoolHolidays-2027.json",
+      "url": "https://openholidaysapi.org/SchoolHolidays?countryIsoCode=DE&subdivisionCode=DE-BB&languageIsoCode=DE&validFrom=2027-01-01&validTo=2027-01-07",
+      "retrieved_at_utc": "2026-10-28T13:24:13Z",
+      "md5": "81565bfa17943c8360756d241f51db3b"
+    },
+    {
+      "file": "DE-HB-SchoolHolidays-2016.json",
+      "url": "https://openholidaysapi.org/SchoolHolidays?countryIsoCode=DE&subdivisionCode=DE-HB&languageIsoCode=DE&validFrom=2016-12-25&validTo=2016-12-31",
+      "retrieved_at_utc": "2026-10-28T13:24:13Z",
+      "md5": "078faf5cd2dfafce6714a97c42673ab9"
+    },
+    {
+      "file": "DE-HB-SchoolHolidays-2017.json",
+      "url": "https://openholidaysapi.org/SchoolHolidays?countryIsoCode=DE&subdivisionCode=DE-HB&languageIsoCode=DE&validFrom=2017-01-01&validTo=2017-12-31",
+      "retrieved_at_utc": "2026-10-28T13:24:13Z",
+      "md5": "3dd07ede7534450e4186874060026a0e"
+    },
+    {
+      "file": "DE-HB-SchoolHolidays-2018.json",
+      "url": "https://openholidaysapi.org/SchoolHolidays?countryIsoCode=DE&subdivisionCode=DE-HB&languageIsoCode=DE&validFrom=2018-01-01&validTo=2018-12-31",
+      "retrieved_at_utc": "2026-10-28T13:24:14Z",
+      "md5": "64d4f296385181cdfc57ff5e01d44967"
+    },
+    {
+      "file": "DE-HB-SchoolHolidays-2019.json",
+      "url": "https://openholidaysapi.org/SchoolHolidays?countryIsoCode=DE&subdivisionCode=DE-HB&languageIsoCode=DE&validFrom=2019-01-01&validTo=2019-12-31",
+      "retrieved_at_utc": "2026-10-28T13:24:14Z",
+      "md5": "4e2cbf20244572cf581cbb5fc861ee8f"
+    },
+    {
+      "file": "DE-HB-SchoolHolidays-2020.json",
+      "url": "https://openholidaysapi.org/SchoolHolidays?countryIsoCode=DE&subdivisionCode=DE-HB&languageIsoCode=DE&validFrom=2020-01-01&validTo=2020-12-31",
+      "retrieved_at_utc": "2026-10-28T13:24:15Z",
+      "md5": "ad24cddc757bc59de32b78596a449a84"
+    },
+    {
+      "file": "DE-HB-SchoolHolidays-2021.json",
+      "url": "https://openholidaysapi.org/SchoolHolidays?countryIsoCode=DE&subdivisionCode=DE-HB&languageIsoCode=DE&validFrom=2021-01-01&validTo=2021-12-31",
+      "retrieved_at_utc": "2026-10-28T13:24:15Z",
+      "md5": "492cc36095a4ec984dcc100d75956f49"
+    },
+    {
+      "file": "DE-HB-SchoolHolidays-2022.json",
+      "url": "https://openholidaysapi.org/SchoolHolidays?countryIsoCode=DE&subdivisionCode=DE-HB&languageIsoCode=DE&validFrom=2022-01-01&validTo=2022-12-31",
+      "retrieved_at_utc": "2026-10-28T13:24:16Z",
+      "md5": "9c7639e03aaa533d87340bd567633d8c"
+    },
+    {
+      "file": "DE-HB-SchoolHolidays-2023.json",
+      "url": "https://openholidaysapi.org/SchoolHolidays?countryIsoCode=DE&subdivisionCode=DE-HB&languageIsoCode=DE&validFrom=2023-01-01&validTo=2023-12-31",
+      "retrieved_at_utc": "2026-10-28T13:24:16Z",
+      "md5": "7b1ced8324fa11b7bb6ec53661864700"
+    },
+    {
+      "file": "DE-HB-SchoolHolidays-2024.json",
+      "url": "https://openholidaysapi.org/SchoolHolidays?countryIsoCode=DE&subdivisionCode=DE-HB&languageIsoCode=DE&validFrom=2024-01-01&validTo=2024-12-31",
+      "retrieved_at_utc": "2026-10-28T13:24:17Z",
+      "md5": "19b886e1f93be6083463500d2388a9c9"
+    },
+    {
+      "file": "DE-HB-SchoolHolidays-2025.json",
+      "url": "https://openholidaysapi.org/SchoolHolidays?countryIsoCode=DE&subdivisionCode=DE-HB&languageIsoCode=DE&validFrom=2025-01-01&validTo=2025-12-31",
+      "retrieved_at_utc": "2026-10-28T13:24:17Z",
+      "md5": "d1aebc6cb04aa316b5a52d373883892d"
+    },
+    {
+      "file": "DE-HB-SchoolHolidays-2026.json",
+      "url": "https://openholidaysapi.org/SchoolHolidays?countryIsoCode=DE&subdivisionCode=DE-HB&languageIsoCode=DE&validFrom=2026-01-01&validTo=2026-12-31",
+      "retrieved_at_utc": "2026-10-28T13:24:17Z",
+      "md5": "7e1d17c7a019ad6ec8a38ccd7479ec6d"
+    },
+    {
+      "file": "DE-HB-SchoolHolidays-2027.json",
+      "url": "https://openholidaysapi.org/SchoolHolidays?countryIsoCode=DE&subdivisionCode=DE-HB&languageIsoCode=DE&validFrom=2027-01-01&validTo=2027-01-07",
+      "retrieved_at_utc": "2026-10-28T13:24:18Z",
+      "md5": "b5120545144897351f3abc621fec1079"
+    },
+    {
+      "file": "DE-NI-SchoolHolidays-2016.json",
+      "url": "https://openholidaysapi.org/SchoolHolidays?countryIsoCode=DE&subdivisionCode=DE-NI&languageIsoCode=DE&validFrom=2016-12-25&validTo=2016-12-31",
+      "retrieved_at_utc": "2026-10-28T13:24:18Z",
+      "md5": "45fe21cdeaf1c82a1251ce3de97ef14f"
+    },
+    {
+      "file": "DE-NI-SchoolHolidays-2017.json",
+      "url": "https://openholidaysapi.org/SchoolHolidays?countryIsoCode=DE&subdivisionCode=DE-NI&languageIsoCode=DE&validFrom=2017-01-01&validTo=2017-12-31",
+      "retrieved_at_utc": "2026-10-28T13:24:18Z",
+      "md5": "a910e2e6248065f118b7a4e7d59e1d86"
+    },
+    {
+      "file": "DE-NI-SchoolHolidays-2018.json",
+      "url": "https://openholidaysapi.org/SchoolHolidays?countryIsoCode=DE&subdivisionCode=DE-NI&languageIsoCode=DE&validFrom=2018-01-01&validTo=2018-12-31",
+      "retrieved_at_utc": "2026-10-28T13:24:19Z",
+      "md5": "23d077aa2ab1919a6cfa16f3b8961ba1"
+    },
+    {
+      "file": "DE-NI-SchoolHolidays-2019.json",
+      "url": "https://openholidaysapi.org/SchoolHolidays?countryIsoCode=DE&subdivisionCode=DE-NI&languageIsoCode=DE&validFrom=2019-01-01&validTo=2019-12-31",
+      "retrieved_at_utc": "2026-10-28T13:24:19Z",
+      "md5": "23f57230dcf9e11761b9339db68911b9"
+    },
+    {
+      "file": "DE-NI-SchoolHolidays-2020.json",
+      "url": "https://openholidaysapi.org/SchoolHolidays?countryIsoCode=DE&subdivisionCode=DE-NI&languageIsoCode=DE&validFrom=2020-01-01&validTo=2020-12-31",
+      "retrieved_at_utc": "2026-10-28T13:24:19Z",
+      "md5": "222a99e637d3412971fa2fdf28910467"
+    },
+    {
+      "file": "DE-NI-SchoolHolidays-2021.json",
+      "url": "https://openholidaysapi.org/SchoolHolidays?countryIsoCode=DE&subdivisionCode=DE-NI&languageIsoCode=DE&validFrom=2021-01-01&validTo=2021-12-31",
+      "retrieved_at_utc": "2026-10-28T13:24:20Z",
+      "md5": "61f680150731170560657971c64de2ed"
+    },
+    {
+      "file": "DE-NI-SchoolHolidays-2022.json",
+      "url": "https://openholidaysapi.org/SchoolHolidays?countryIsoCode=DE&subdivisionCode=DE-NI&languageIsoCode=DE&validFrom=2022-01-01&validTo=2022-12-31",
+      "retrieved_at_utc": "2026-10-28T13:24:20Z",
+      "md5": "989722c162abd992ef0e7ac98901a5b6"
+    },
+    {
+      "file": "DE-NI-SchoolHolidays-2023.json",
+      "url": "https://openholidaysapi.org/SchoolHolidays?countryIsoCode=DE&subdivisionCode=DE-NI&languageIsoCode=DE&validFrom=2023-01-01&validTo=2023-12-31",
+      "retrieved_at_utc": "2026-10-28T13:24:20Z",
+      "md5": "7e460e6570733beaa015ccc20615522b"
+    },
+    {
+      "file": "DE-NI-SchoolHolidays-2024.json",
+      "url": "https://openholidaysapi.org/SchoolHolidays?countryIsoCode=DE&subdivisionCode=DE-NI&languageIsoCode=DE&validFrom=2024-01-01&validTo=2024-12-31",
+      "retrieved_at_utc": "2026-10-28T13:24:21Z",
+      "md5": "5148894a783b0fe265271a5db23b50b6"
+    },
+    {
+      "file": "DE-NI-SchoolHolidays-2025.json",
+      "url": "https://openholidaysapi.org/SchoolHolidays?countryIsoCode=DE&subdivisionCode=DE-NI&languageIsoCode=DE&validFrom=2025-01-01&validTo=2025-12-31",
+      "retrieved_at_utc": "2026-10-28T13:24:21Z",
+      "md5": "73b38376b9698179a64fdb4ccdb8c084"
+    },
+    {
+      "file": "DE-NI-SchoolHolidays-2026.json",
+      "url": "https://openholidaysapi.org/SchoolHolidays?countryIsoCode=DE&subdivisionCode=DE-NI&languageIsoCode=DE&validFrom=2026-01-01&validTo=2026-12-31",
+      "retrieved_at_utc": "2026-10-28T13:24:21Z",
+      "md5": "3e75305137679d5b593e7648e78e470f"
+    },
+    {
+      "file": "DE-NI-SchoolHolidays-2027.json",
+      "url": "https://openholidaysapi.org/SchoolHolidays?countryIsoCode=DE&subdivisionCode=DE-NI&languageIsoCode=DE&validFrom=2027-01-01&validTo=2027-01-07",
+      "retrieved_at_utc": "2026-10-28T13:24:22Z",
+      "md5": "4528a851906b283870662a689e08427e"
+    },
+    {
+      "file": "DE-NW-SchoolHolidays-2016.json",
+      "url": "https://openholidaysapi.org/SchoolHolidays?countryIsoCode=DE&subdivisionCode=DE-NW&languageIsoCode=DE&validFrom=2016-12-25&validTo=2016-12-31",
+      "retrieved_at_utc": "2026-10-28T13:24:22Z",
+      "md5": "5b1d9d9454f6264972f8e257200df0e8"
+    },
+    {
+      "file": "DE-NW-SchoolHolidays-2017.json",
+      "url": "https://openholidaysapi.org/SchoolHolidays?countryIsoCode=DE&subdivisionCode=DE-NW&languageIsoCode=DE&validFrom=2017-01-01&validTo=2017-12-31",
+      "retrieved_at_utc": "2026-10-28T13:24:22Z",
+      "md5": "bf30ca9e509da2645f3b2eb72c1fc3fb"
+    },
+    {
+      "file": "DE-NW-SchoolHolidays-2018.json",
+      "url": "https://openholidaysapi.org/SchoolHolidays?countryIsoCode=DE&subdivisionCode=DE-NW&languageIsoCode=DE&validFrom=2018-01-01&validTo=2018-12-31",
+      "retrieved_at_utc": "2026-10-28T13:24:23Z",
+      "md5": "4ae1caaf5c31f1662f7622cb961a4fe7"
+    },
+    {
+      "file": "DE-NW-SchoolHolidays-2019.json",
+      "url": "https://openholidaysapi.org/SchoolHolidays?countryIsoCode=DE&subdivisionCode=DE-NW&languageIsoCode=DE&validFrom=2019-01-01&validTo=2019-12-31",
+      "retrieved_at_utc": "2026-10-28T13:24:23Z",
+      "md5": "f0a441088adb25d75558538c3084dbe8"
+    },
+    {
+      "file": "DE-NW-SchoolHolidays-2020.json",
+      "url": "https://openholidaysapi.org/SchoolHolidays?countryIsoCode=DE&subdivisionCode=DE-NW&languageIsoCode=DE&validFrom=2020-01-01&validTo=2020-12-31",
+      "retrieved_at_utc": "2026-10-28T13:24:23Z",
+      "md5": "32ec90d132138730978d36133e363725"
+    },
+    {
+      "file": "DE-NW-SchoolHolidays-2021.json",
+      "url": "https://openholidaysapi.org/SchoolHolidays?countryIsoCode=DE&subdivisionCode=DE-NW&languageIsoCode=DE&validFrom=2021-01-01&validTo=2021-12-31",
+      "retrieved_at_utc": "2026-10-28T13:24:24Z",
+      "md5": "4f234c2e868ed7a072d8a14fe0e8f6e6"
+    },
+    {
+      "file": "DE-NW-SchoolHolidays-2022.json",
+      "url": "https://openholidaysapi.org/SchoolHolidays?countryIsoCode=DE&subdivisionCode=DE-NW&languageIsoCode=DE&validFrom=2022-01-01&validTo=2022-12-31",
+      "retrieved_at_utc": "2026-10-28T13:24:24Z",
+      "md5": "bc825e1732e6b7ea910cf34a97744a60"
+    },
+    {
+      "file": "DE-NW-SchoolHolidays-2023.json",
+      "url": "https://openholidaysapi.org/SchoolHolidays?countryIsoCode=DE&subdivisionCode=DE-NW&languageIsoCode=DE&validFrom=2023-01-01&validTo=2023-12-31",
+      "retrieved_at_utc": "2026-10-28T13:24:24Z",
+      "md5": "c9e69cd3e51da2e4beb00bccb4ae6047"
+    },
+    {
+      "file": "DE-NW-SchoolHolidays-2024.json",
+      "url": "https://openholidaysapi.org/SchoolHolidays?countryIsoCode=DE&subdivisionCode=DE-NW&languageIsoCode=DE&validFrom=2024-01-01&validTo=2024-12-31",
+      "retrieved_at_utc": "2026-10-28T13:24:25Z",
+      "md5": "c191f6ae3af2c194cb0c8b06d9f5cfeb"
+    },
+    {
+      "file": "DE-NW-SchoolHolidays-2025.json",
+      "url": "https://openholidaysapi.org/SchoolHolidays?countryIsoCode=DE&subdivisionCode=DE-NW&languageIsoCode=DE&validFrom=2025-01-01&validTo=2025-12-31",
+      "retrieved_at_utc": "2026-10-28T13:24:25Z",
+      "md5": "3b1d40985a5e90e55b3dfadb6da6fb8a"
+    },
+    {
+      "file": "DE-NW-SchoolHolidays-2026.json",
+      "url": "https://openholidaysapi.org/SchoolHolidays?countryIsoCode=DE&subdivisionCode=DE-NW&languageIsoCode=DE&validFrom=2026-01-01&validTo=2026-12-31",
+      "retrieved_at_utc": "2026-10-28T13:24:25Z",
+      "md5": "5acc3206e963917449f4b971f40546d0"
+    },
+    {
+      "file": "DE-NW-SchoolHolidays-2027.json",
+      "url": "https://openholidaysapi.org/SchoolHolidays?countryIsoCode=DE&subdivisionCode=DE-NW&languageIsoCode=DE&validFrom=2027-01-01&validTo=2027-01-07",
+      "retrieved_at_utc": "2026-10-28T13:24:26Z",
+      "md5": "102801a6fb99252ad02b098f3123b463"
+    },
+    {
+      "file": "DE-ST-SchoolHolidays-2016.json",
+      "url": "https://openholidaysapi.org/SchoolHolidays?countryIsoCode=DE&subdivisionCode=DE-ST&languageIsoCode=DE&validFrom=2016-12-25&validTo=2016-12-31",
+      "retrieved_at_utc": "2026-10-28T13:24:26Z",
+      "md5": "3f613b5115e119adcf9f788e6b2a9488"
+    },
+    {
+      "file": "DE-ST-SchoolHolidays-2017.json",
+      "url": "https://openholidaysapi.org/SchoolHolidays?countryIsoCode=DE&subdivisionCode=DE-ST&languageIsoCode=DE&validFrom=2017-01-01&validTo=2017-12-31",
+      "retrieved_at_utc": "2026-10-28T13:24:26Z",
+      "md5": "c868671477bed30d38ca77ec54968105"
+    },
+    {
+      "file": "DE-ST-SchoolHolidays-2018.json",
+      "url": "https://openholidaysapi.org/SchoolHolidays?countryIsoCode=DE&subdivisionCode=DE-ST&languageIsoCode=DE&validFrom=2018-01-01&validTo=2018-12-31",
+      "retrieved_at_utc": "2026-10-28T13:24:27Z",
+      "md5": "42326b3eb6e25c70cd145a80a0208c7e"
+    },
+    {
+      "file": "DE-ST-SchoolHolidays-2019.json",
+      "url": "https://openholidaysapi.org/SchoolHolidays?countryIsoCode=DE&subdivisionCode=DE-ST&languageIsoCode=DE&validFrom=2019-01-01&validTo=2019-12-31",
+      "retrieved_at_utc": "2026-10-28T13:24:27Z",
+      "md5": "34f5a2c63849155e406b393cbc915bda"
+    },
+    {
+      "file": "DE-ST-SchoolHolidays-2020.json",
+      "url": "https://openholidaysapi.org/SchoolHolidays?countryIsoCode=DE&subdivisionCode=DE-ST&languageIsoCode=DE&validFrom=2020-01-01&validTo=2020-12-31",
+      "retrieved_at_utc": "2026-10-28T13:24:27Z",
+      "md5": "97b77ae6faa46e9a033e216524566343"
+    },
+    {
+      "file": "DE-ST-SchoolHolidays-2021.json",
+      "url": "https://openholidaysapi.org/SchoolHolidays?countryIsoCode=DE&subdivisionCode=DE-ST&languageIsoCode=DE&validFrom=2021-01-01&validTo=2021-12-31",
+      "retrieved_at_utc": "2026-10-28T13:24:28Z",
+      "md5": "e1972804b68f34b984f0ba59261d480e"
+    },
+    {
+      "file": "DE-ST-SchoolHolidays-2022.json",
+      "url": "https://openholidaysapi.org/SchoolHolidays?countryIsoCode=DE&subdivisionCode=DE-ST&languageIsoCode=DE&validFrom=2022-01-01&validTo=2022-12-31",
+      "retrieved_at_utc": "2026-10-28T13:24:28Z",
+      "md5": "efdcd6f9b546a3bbc1bd927dfaa74186"
+    },
+    {
+      "file": "DE-ST-SchoolHolidays-2023.json",
+      "url": "https://openholidaysapi.org/SchoolHolidays?countryIsoCode=DE&subdivisionCode=DE-ST&languageIsoCode=DE&validFrom=2023-01-01&validTo=2023-12-31",
+      "retrieved_at_utc": "2026-10-28T13:24:28Z",
+      "md5": "086b573d71e5579f5aa4a13677ee435a"
+    },
+    {
+      "file": "DE-ST-SchoolHolidays-2024.json",
+      "url": "https://openholidaysapi.org/SchoolHolidays?countryIsoCode=DE&subdivisionCode=DE-ST&languageIsoCode=DE&validFrom=2024-01-01&validTo=2024-12-31",
+      "retrieved_at_utc": "2026-10-28T13:24:29Z",
+      "md5": "c8eff228963f468dcf47e14136e7eef9"
+    },
+    {
+      "file": "DE-ST-SchoolHolidays-2025.json",
+      "url": "https://openholidaysapi.org/SchoolHolidays?countryIsoCode=DE&subdivisionCode=DE-ST&languageIsoCode=DE&validFrom=2025-01-01&validTo=2025-12-31",
+      "retrieved_at_utc": "2026-10-28T13:24:29Z",
+      "md5": "a7a4f2a4387ce7cbf7f797ca2814e4e9"
+    },
+    {
+      "file": "DE-ST-SchoolHolidays-2026.json",
+      "url": "https://openholidaysapi.org/SchoolHolidays?countryIsoCode=DE&subdivisionCode=DE-ST&languageIsoCode=DE&validFrom=2026-01-01&validTo=2026-12-31",
+      "retrieved_at_utc": "2026-10-28T13:24:29Z",
+      "md5": "e59e5706baa47a8ab9792b8cbc707425"
+    },
+    {
+      "file": "DE-ST-SchoolHolidays-2027.json",
+      "url": "https://openholidaysapi.org/SchoolHolidays?countryIsoCode=DE&subdivisionCode=DE-ST&languageIsoCode=DE&validFrom=2027-01-01&validTo=2027-01-07",
+      "retrieved_at_utc": "2026-10-28T13:24:30Z",
+      "md5": "e6e87634b74bed0eecc0603e0152f6ce"
+    },
+    {
+      "file": "DE-TH-SchoolHolidays-2016.json",
+      "url": "https://openholidaysapi.org/SchoolHolidays?countryIsoCode=DE&subdivisionCode=DE-TH&languageIsoCode=DE&validFrom=2016-12-25&validTo=2016-12-31",
+      "retrieved_at_utc": "2026-10-28T13:24:30Z",
+      "md5": "6369baf1f0b94594da43225da4260611"
+    },
+    {
+      "file": "DE-TH-SchoolHolidays-2017.json",
+      "url": "https://openholidaysapi.org/SchoolHolidays?countryIsoCode=DE&subdivisionCode=DE-TH&languageIsoCode=DE&validFrom=2017-01-01&validTo=2017-12-31",
+      "retrieved_at_utc": "2026-10-28T13:24:30Z",
+      "md5": "a2498555908056a4145b08e7bc96dca5"
+    },
+    {
+      "file": "DE-TH-SchoolHolidays-2018.json",
+      "url": "https://openholidaysapi.org/SchoolHolidays?countryIsoCode=DE&subdivisionCode=DE-TH&languageIsoCode=DE&validFrom=2018-01-01&validTo=2018-12-31",
+      "retrieved_at_utc": "2026-10-28T13:24:31Z",
+      "md5": "216ab1682adbbc6b5b7fd995ef233715"
+    },
+    {
+      "file": "DE-TH-SchoolHolidays-2019.json",
+      "url": "https://openholidaysapi.org/SchoolHolidays?countryIsoCode=DE&subdivisionCode=DE-TH&languageIsoCode=DE&validFrom=2019-01-01&validTo=2019-12-31",
+      "retrieved_at_utc": "2026-10-28T13:24:31Z",
+      "md5": "26920fb22443cbfc0d44a252b47fea77"
+    },
+    {
+      "file": "DE-TH-SchoolHolidays-2020.json",
+      "url": "https://openholidaysapi.org/SchoolHolidays?countryIsoCode=DE&subdivisionCode=DE-TH&languageIsoCode=DE&validFrom=2020-01-01&validTo=2020-12-31",
+      "retrieved_at_utc": "2026-10-28T13:24:31Z",
+      "md5": "5b23d8b72aaa364842141c926f7d17f4"
+    },
+    {
+      "file": "DE-TH-SchoolHolidays-2021.json",
+      "url": "https://openholidaysapi.org/SchoolHolidays?countryIsoCode=DE&subdivisionCode=DE-TH&languageIsoCode=DE&validFrom=2021-01-01&validTo=2021-12-31",
+      "retrieved_at_utc": "2026-10-28T13:24:31Z",
+      "md5": "8c57d1e2612f940d61d413254888e3b3"
+    },
+    {
+      "file": "DE-TH-SchoolHolidays-2022.json",
+      "url": "https://openholidaysapi.org/SchoolHolidays?countryIsoCode=DE&subdivisionCode=DE-TH&languageIsoCode=DE&validFrom=2022-01-01&validTo=2022-12-31",
+      "retrieved_at_utc": "2026-10-28T13:24:32Z",
+      "md5": "ae45e0e84ea4ff3be23fd91903efce34"
+    },
+    {
+      "file": "DE-TH-SchoolHolidays-2023.json",
+      "url": "https://openholidaysapi.org/SchoolHolidays?countryIsoCode=DE&subdivisionCode=DE-TH&languageIsoCode=DE&validFrom=2023-01-01&validTo=2023-12-31",
+      "retrieved_at_utc": "2026-10-28T13:24:32Z",
+      "md5": "db7bd046354cd86c403a557187d50658"
+    },
+    {
+      "file": "DE-TH-SchoolHolidays-2024.json",
+      "url": "https://openholidaysapi.org/SchoolHolidays?countryIsoCode=DE&subdivisionCode=DE-TH&languageIsoCode=DE&validFrom=2024-01-01&validTo=2024-12-31",
+      "retrieved_at_utc": "2026-10-28T13:24:33Z",
+      "md5": "413f97211b1d4d88102baeb3e60b2b45"
+    },
+    {
+      "file": "DE-TH-SchoolHolidays-2025.json",
+      "url": "https://openholidaysapi.org/SchoolHolidays?countryIsoCode=DE&subdivisionCode=DE-TH&languageIsoCode=DE&validFrom=2025-01-01&validTo=2025-12-31",
+      "retrieved_at_utc": "2026-10-28T13:24:33Z",
+      "md5": "c4648299b3b6835411da169f9d1587c9"
+    },
+    {
+      "file": "DE-TH-SchoolHolidays-2026.json",
+      "url": "https://openholidaysapi.org/SchoolHolidays?countryIsoCode=DE&subdivisionCode=DE-TH&languageIsoCode=DE&validFrom=2026-01-01&validTo=2026-12-31",
+      "retrieved_at_utc": "2026-10-28T13:24:33Z",
+      "md5": "fd1caa94451a8ba1882f993e5732cf97"
+    },
+    {
+      "file": "DE-TH-SchoolHolidays-2027.json",
+      "url": "https://openholidaysapi.org/SchoolHolidays?countryIsoCode=DE&subdivisionCode=DE-TH&languageIsoCode=DE&validFrom=2027-01-01&validTo=2027-01-07",
+      "retrieved_at_utc": "2026-10-28T13:24:33Z",
+      "md5": "65ada533557113f39b6d40840a71b8ae"
+    }
+  ],
+  "output_md5": {
+    "calendar_comparison_mismatches.csv": "91207e6afa5b3f140fef6ca7deb03321",
+    "calendar_comparison_rows.csv": "7ed777f52cbe23dcfac362220724af32",
+    "calendar_comparison_summary.json": "70d44a5ab76eab0d58e1822e45ef7641",
+    "calendar_daily.csv": "c64d9c806af8779a25db8c420336753d",
+    "calendar_weekly.csv": "863b68080c7374d180bbc0d2b4940958",
+    "datumlanderferienfeiertage.csv": "17bba52321c50dd0d459d42eb70c7df0"
+  }
+}

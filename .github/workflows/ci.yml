@@ -5,6 +5,15 @@ on:
   pull_request:
 
 jobs:
+  r-calendar:
+    runs-on: ubuntu-latest
+    container:
+      image: rocker/r-base:4.5.1@sha256:40fb0a949029b91a86f0a5b091b698977d3d7cd70a22f744e79ddce06812de78
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check German shopping-calendar and school-holiday rules offline
+        run: Rscript tests/test_calendar_de.R
+
   test:
     runs-on: ubuntu-latest
     steps:
