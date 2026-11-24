@@ -1,8 +1,10 @@
 # WKR Automotive Forecasting Lab
 
-A learning-by-building project that turns a realistic automotive forecasting use case into a reproducible cloud ML system.
+A reproducible forecasting case study for Germany’s automotive supplier market. It combines segment-level sales forecasts, holdout diagnostics, and versioned Azure Machine Learning jobs.
 
 **WKR Komponenten KGaA is fictional. Company sales and product data are synthetic. External German automotive, calendar and weather data are used as realistic context.**
+
+[Validated Azure sales-forecast run and results](#latest-validated-azure-sales-forecast) · [Reproduction steps](#reproducibility)
 
 ## Business question
 
